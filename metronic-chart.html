@@ -1,0 +1,559 @@
+<div class="row">
+    <div class="col-xl-4">
+        <!--begin::Stats Widget 7-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Body-->
+            <div class="card-body d-flex flex-column p-0">
+                <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                    <div class="d-flex flex-column mr-2">
+                        <a href="#"
+                            class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">Last
+                            7 Days
+                            Sales</a>
+                        <span class="text-muted font-weight-bold mt-2">Weekly Sales Chart</span>
+                    </div>
+                    <span class="symbol symbol-light-success symbol-45">
+                        <span
+                            class="symbol-label font-weight-bolder font-size-h6">+{{ $lastSevenDaysSalesRecords['total'] }}</span>
+                    </span>
+                </div>
+                <div id="last_7_days_chart" class="card-rounded-bottom" style="height: 150px">
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 7-->
+    </div>
+    <div class="col-xl-4">
+        <!--begin::Stats Widget 8-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Body-->
+            <div class="card-body d-flex flex-column p-0">
+                <div class="d-flex align-items-center justify-content-between card-spacer">
+                    <div class="d-flex flex-column mr-2">
+                        <a href="#"
+                            class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">Last
+                            30 Days Sales</a>
+                        <span class="text-muted font-weight-bold mt-2">Monthly Sales Chart</span>
+                    </div>
+                    <span class="symbol symbol-light-danger symbol-45">
+                        <span
+                            class="symbol-label font-weight-bolder font-size-h6">+{{ $lastThirtyDaysSalesRecords['total'] }}</span>
+                    </span>
+                </div>
+                <div id="last_30_days_chart" class="card-rounded-bottom" style="height: 150px">
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 8-->
+    </div>
+    <div class="col-xl-4">
+        <!--begin::Stats Widget 9-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Body-->
+            <div class="card-body d-flex flex-column p-0">
+                <div class="d-flex align-items-center justify-content-between card-spacer">
+                    <div class="d-flex flex-column mr-2">
+                        <a href="#"
+                            class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">Last
+                            12 Month Sales
+                            Progress</a>
+                        <span class="text-muted font-weight-bold mt-2">Yearly Sales Chart</span>
+                    </div>
+                    <span class="symbol symbol-light-primary symbol-45">
+                        <span
+                            class="symbol-label font-weight-bolder font-size-h6">+{{ $lastYearSalesRecords['total'] }}</span>
+                    </span>
+                </div>
+                <div id="last_12_months_chart" class="card-rounded-bottom" style="height: 150px">
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 9-->
+    </div>
+</div>
+<!-- script -->
+<script>
+    var KTAppSettings = {
+        "breakpoints": {
+            "sm": 576,
+            "md": 768,
+            "lg": 992,
+            "xl": 1200,
+            "xxl": 1400
+        },
+        "colors": {
+            "theme": {
+                "base": {
+                    "white": "#ffffff",
+                    "primary": "#3699FF",
+                    "secondary": "#E5EAEE",
+                    "success": "#1BC5BD",
+                    "info": "#8950FC",
+                    "warning": "#FFA800",
+                    "danger": "#F64E60",
+                    "light": "#E4E6EF",
+                    "dark": "#181C32"
+                },
+                "light": {
+                    "white": "#ffffff",
+                    "primary": "#E1F0FF",
+                    "secondary": "#EBEDF3",
+                    "success": "#C9F7F5",
+                    "info": "#EEE5FF",
+                    "warning": "#FFF4DE",
+                    "danger": "#FFE2E5",
+                    "light": "#F3F6F9",
+                    "dark": "#D6D6E0"
+                },
+                "inverse": {
+                    "white": "#ffffff",
+                    "primary": "#ffffff",
+                    "secondary": "#3F4254",
+                    "success": "#ffffff",
+                    "info": "#ffffff",
+                    "warning": "#ffffff",
+                    "danger": "#ffffff",
+                    "light": "#464E5F",
+                    "dark": "#ffffff"
+                }
+            },
+            "gray": {
+                "gray-100": "#F3F6F9",
+                "gray-200": "#EBEDF3",
+                "gray-300": "#E4E6EF",
+                "gray-400": "#D1D3E0",
+                "gray-500": "#B5B5C3",
+                "gray-600": "#7E8299",
+                "gray-700": "#5E6278",
+                "gray-800": "#3F4254",
+                "gray-900": "#181C32"
+            }
+        },
+        "font-family": "Poppins"
+    };
+
+</script>
+<script>
+        // Class definition
+        var CourierChart = function() {
+            // Private properties
+            // // Stats widgets
+            var last_7_days_chart = function() {
+                var element = document.getElementById("last_7_days_chart");
+
+                if (!element) {
+                    return;
+                }
+
+                var options = {
+                    series: [{
+                        name: 'Orders',
+                        data: [{!! $lastSevenDaysSalesRecords['order'] !!}]
+                    }],
+                    chart: {
+                        type: 'area',
+                        height: 150,
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                        sparkline: {
+                            enabled: true
+                        }
+                    },
+                    plotOptions: {},
+                    legend: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    fill: {
+                        type: 'solid',
+                        opacity: 1
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        show: true,
+                        width: 3,
+                        colors: [KTApp.getSettings()['colors']['theme']['base']['success']]
+                    },
+                    xaxis: {
+                        categories: [{!!$lastSevenDaysSalesRecords['date'] !!}],
+                        axisBorder: {
+                            show: false,
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        },
+                        crosshairs: {
+                            show: false,
+                            position: 'front',
+                            stroke: {
+                                color: KTApp.getSettings()['colors']['gray']['gray-300'],
+                                width: 1,
+                                dashArray: 3
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            formatter: undefined,
+                            offsetY: 0,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    states: {
+                        normal: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        hover: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        active: {
+                            allowMultipleDataPointsSelection: false,
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        }
+                    },
+                    tooltip: {
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: KTApp.getSettings()['font-family']
+                        },
+                        y: {
+                            formatter: function(val) {
+                                return val
+                            }
+                        }
+                    },
+                    colors: [KTApp.getSettings()['colors']['theme']['light']['success']],
+                    markers: {
+                        colors: [KTApp.getSettings()['colors']['theme']['light']['success']],
+                        strokeColor: [KTApp.getSettings()['colors']['theme']['base']['success']],
+                        strokeWidth: 3
+                    }
+                };
+
+                var chart = new ApexCharts(element, options);
+                chart.render();
+            }
+            var last_30_days_chart = function() {
+                var element = document.getElementById("last_30_days_chart");
+
+                if (!element) {
+                    return;
+                }
+
+                var options = {
+                    series: [{
+                        name: 'Order',
+                        data: [{!!$lastThirtyDaysSalesRecords['order'] !!}]
+                    }],
+                    chart: {
+                        type: 'area',
+                        height: 150,
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                        sparkline: {
+                            enabled: true
+                        }
+                    },
+                    plotOptions: {},
+                    legend: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    fill: {
+                        type: 'solid',
+                        opacity: 1
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        show: true,
+                        width: 3,
+                        colors: [KTApp.getSettings()['colors']['theme']['base']['danger']]
+                    },
+                    xaxis: {
+                        categories: [{!!$lastThirtyDaysSalesRecords['date'] !!}],
+                        axisBorder: {
+                            show: false,
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        },
+                        crosshairs: {
+                            show: false,
+                            position: 'front',
+                            stroke: {
+                                color: KTApp.getSettings()['colors']['gray']['gray-300'],
+                                width: 1,
+                                dashArray: 3
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            formatter: undefined,
+                            offsetY: 0,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    states: {
+                        normal: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        hover: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        active: {
+                            allowMultipleDataPointsSelection: false,
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        }
+                    },
+                    tooltip: {
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: KTApp.getSettings()['font-family']
+                        },
+                        y: {
+                            formatter: function(val) {
+                                return "Orders: " + val;
+                            }
+                        }
+                    },
+                    colors: [KTApp.getSettings()['colors']['theme']['light']['danger']],
+                    markers: {
+                        colors: [KTApp.getSettings()['colors']['theme']['light']['danger']],
+                        strokeColor: [KTApp.getSettings()['colors']['theme']['base']['danger']],
+                        strokeWidth: 3
+                    }
+                };
+
+                var chart = new ApexCharts(element, options);
+                chart.render();
+            }
+            var last_12_months_chart = function() {
+                var element = document.getElementById("last_12_months_chart");
+
+                if (!element) {
+                    return;
+                }
+
+                var options = {
+                    series: [{
+                        name: 'Order',
+                        data: [{!! $lastYearSalesRecords['order'] !!}]
+                    }],
+                    chart: {
+                        type: 'area',
+                        height: 150,
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                        sparkline: {
+                            enabled: true
+                        }
+                    },
+                    plotOptions: {},
+                    legend: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    fill: {
+                        type: 'solid',
+                        opacity: 1
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        show: true,
+                        width: 3,
+                        colors: [KTApp.getSettings()['colors']['theme']['base']['primary']]
+                    },
+                    xaxis: {
+                        categories: [{!! $lastYearSalesRecords['month'] !!}],
+                        axisBorder: {
+                            show: false,
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        },
+                        crosshairs: {
+                            show: false,
+                            position: 'front',
+                            stroke: {
+                                color: KTApp.getSettings()['colors']['gray']['gray-300'],
+                                width: 1,
+                                dashArray: 3
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            formatter: undefined,
+                            offsetY: 0,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            show: false,
+                            style: {
+                                colors: KTApp.getSettings()['colors']['gray']['gray-500'],
+                                fontSize: '12px',
+                                fontFamily: KTApp.getSettings()['font-family']
+                            }
+                        }
+                    },
+                    states: {
+                        normal: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        hover: {
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        },
+                        active: {
+                            allowMultipleDataPointsSelection: false,
+                            filter: {
+                                type: 'none',
+                                value: 0
+                            }
+                        }
+                    },
+                    tooltip: {
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: KTApp.getSettings()['font-family']
+                        },
+                        y: {
+                            formatter: function (val) {
+                                return "Orders: " + val;
+                            }
+                        }
+                    },
+                    colors: [KTApp.getSettings()['colors']['theme']['light']['primary']],
+                    markers: {
+                        colors: [KTApp.getSettings()['colors']['theme']['light']['primary']],
+                        strokeColor: [KTApp.getSettings()['colors']['theme']['base']['primary']],
+                        strokeWidth: 3
+                    }
+                };
+
+                var chart = new ApexCharts(element, options);
+                chart.render();
+            }
+
+
+
+            // Public methods
+            return {
+                init: function() {
+                    // General Controls
+
+                    // Stats Widgets
+                    last_7_days_chart();
+                    last_30_days_chart();
+                    last_12_months_chart();
+                }
+            }
+        }();
+
+        // Webpack support
+        // if (typeof module !== 'undefined') {
+        //     module.exports = KTWidgets;
+        // }
+
+        jQuery(document).ready(function() {
+            CourierChart.init();
+        });
+
+    </script>
